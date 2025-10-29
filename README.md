@@ -36,8 +36,9 @@ go test -run TestWebServerDocker -v
 
 Manually apply and open in a browser:
 ```bash
-terraform -chdir=terraform init
-terraform -chdir=terraform apply -auto-approve
+docker rm -f demo-nginx
+terraform init
+terraform apply -auto-approve
 open http://localhost:8080
 ```
 
@@ -75,6 +76,7 @@ Or apply and browse manually:
 terraform init
 terraform apply -auto-approve
 minikube service demo-nginx-svc --url -p minikube
+kubectl -n default scale deploy/demo-nginx --replicas=5
 # Copy the printed URL and open it, or:
 curl "$(minikube service demo-nginx-svc --url -p minikube)"
 ```

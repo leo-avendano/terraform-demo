@@ -9,9 +9,9 @@ terraform {
 
 variable "name" { type = string }
 variable "image" { type = string }
-variable "internal_port" { type = number }
-variable "external_port" { type = number }
-variable "host_content_dir" { type = string }
+variable "port" { type = number }
+variable "public_port" { type = number }
+variable "site_dir" { type = string }
 
 resource "docker_image" "nginx" {
   name         = var.image
@@ -23,19 +23,19 @@ resource "docker_container" "nginx" {
   image = docker_image.nginx.image_id
 
   ports {
-    internal = var.internal_port
-    external = var.external_port
+    internal = var.port
+    external = var.public_port
   }
 
   volumes {
-    host_path      = var.host_content_dir
+    host_path      = abspath(var.site_dir)
     container_path = "/usr/share/nginx/html"
     read_only      = true
   }
 }
 
 output "url" {
-  value = "http://localhost:${var.external_port}"
+  value = "http://localhost:${var.public_port}"
 }
 
 

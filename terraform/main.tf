@@ -13,13 +13,13 @@ provider "docker" {
   host = "unix://${pathexpand("~/.colima/default/docker.sock")}"
 }
 
-module "nginx" {
-  source           = "../modules/nginx"
-  name             = "demo-nginx"
-  image            = "nginx:alpine"
-  internal_port    = 80
-  external_port    = 8080
-  host_content_dir = abspath("${path.module}/../site")
+module "webserver" {
+  source      = "../modules/nginx"
+  name        = "demo-nginx"
+  image       = "nginx:alpine"
+  port        = 80
+  public_port = 8080
+  site_dir    = abspath("${path.module}/../site")
 }
 
 
